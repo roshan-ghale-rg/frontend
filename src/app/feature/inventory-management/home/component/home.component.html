@@ -1,0 +1,65 @@
+<mat-toolbar>
+    <div class="headline">Inventory Forecast</div>
+</mat-toolbar>
+<div class="mat-elevation-z8">
+<div class="be-container mat-elevation-z8">
+<div class="table-container">
+      <div class="be-loading-shade" *ngIf="isLoadingResults">
+          <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+        </div>
+      <mat-form-field>
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+    <table mat-table class="table-striped" [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+       <ng-container matColumnDef="imgUrl">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+            <td mat-cell *matCellDef="let row"><img class="imgURL"src="{{row.imgUrl}}"></td>
+          </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Name </th>
+        <td mat-cell *matCellDef="let row" class="name product-title" matTooltip="test"> {{row.name}} </td>
+      
+      </ng-container>
+
+      <ng-container matColumnDef="currentStock">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Current Stock (units)</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter align"> {{row.currentStock}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="salesVelocity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Sales Velocity (units / day)</th>
+        <td mat-cell *matCellDef="let row" class="alignCenter align"> {{row.salesVelocity}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="leadTime" class="alignCenter">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Lead Time (days)</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter">  
+            <mat-form-field style="width: 20%;">
+            <input matInput [(ngModel)]="row.productForecast.leadTime" type="number" (keyup)="updateProduct(row,row.productForecast.leadTime)">
+          </mat-form-field>
+        </td>
+        </ng-container>
+
+      <ng-container matColumnDef="ooStock" class="alignCenter">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Out of Stock (in days) </th>
+        <td mat-cell *matCellDef="let row" class="alignCenter align"> {{row.productForecast.ooStock}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="reOrder">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Re-Order (in days) </th>
+        <td mat-cell *matCellDef="let row" class="alignCenter align"> {{row.productForecast.reorder}} </td>
+      </ng-container>
+
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div>
+</div>

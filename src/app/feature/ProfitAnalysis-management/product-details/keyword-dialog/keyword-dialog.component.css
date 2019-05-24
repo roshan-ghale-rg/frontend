@@ -1,0 +1,117 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+mat-form-field {
+  width: 50%;
+}
+* {
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(31,41,49,1);
+}
+.product-title1{
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  height: inherit;
+  max-width: 350px;
+}
+table{
+  width: 100%;
+  height: 100%;
+  border: 1px solid;
+  border-color: rgba(233,233,233,1) !important;
+  table-layout: auto;
+}
+.td{
+  padding: 4px 1px;
+  overflow: hidden;
+  border-width: 1px;
+  border-style: solid;
+  text-align: center;
+}
+.headline{
+  font-size: 20px;
+}
+.name{
+  width: 200px;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.imgURL{
+  width: 40px;
+  height: 40px;
+}
+md-icon{
+  font-family: 'Material Icons' !important;
+}
+
+canvas {
+  width: 500px;
+  height: 500px;
+}
+
+.a-text-ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden!important;
+  white-space: nowrap;
+  display: block;
+}
+.a-size-large {
+  text-rendering: optimizeLegibility;
+  font-size: 21px!important;
+  line-height: 1.3!important;
+  font-color: rgba(64, 113, 158, 1)!important;
+}
+
+
+.search {
+  width: 100%;
+  position: relative
+}
+
+.searchTerm {
+  float: left;
+  width: 100%;
+  border: 3px solid #00B4CC;
+  padding: 5px;
+  height: 20px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+}
+
+.searchTerm:focus{
+  color: #00B4CC;
+}
+
+.searchButton {
+  position: absolute;
+  right: -50px;
+  width: 40px;
+  height: 36px;
+  border: 1px solid #00B4CC;
+  background: #00B4CC;
+  text-align: center;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+  width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.no-records {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}

@@ -1,0 +1,375 @@
+
+<div class="card">
+  <div class="card-header">
+
+
+    <h3> Product Name:</h3> <h3 class="a-size-large a-text-ellipsis" >{{name}}</h3>
+
+    <h3>ASIN: </h3> <h5>{{asin}}</h5>
+
+  </div>
+</div>
+
+<div style="margin-bottom:20px;"></div>
+
+<div class="card">
+  <div class="card-header">
+    <mat-placeholder>Search Competing Product(By ASIN NO) </mat-placeholder>
+  </div>
+  <div class="card-body">
+    <!--<div class="wrap">-->
+      <!--<div class="search">-->
+        <mat-form-field class="col-lg-6">
+          <input matInput type="search" [(ngModel)]="asin">
+          <button  mat-button matSuffix mat-stroked-button aria-label="search" (click)="getCompetitiveSeller(asin)">
+            <mat-icon>search</mat-icon>
+          </button>
+        </mat-form-field>
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+</div>
+<div style="margin-bottom:20px;"></div>
+
+<div class="card">
+  <div class="card-header">
+
+    <div class="mat-elevation-z8">
+      <div class="headline">Competing Products & Sellers</div>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+      </mat-form-field>
+
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+          <ng-container matColumnDef="productTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+            <td mat-cell *matCellDef="let row"><a href={{row.url}} target="_blank">{{(row.productTitle ===null)? 'N/A': row.productTitle}}</a></td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Category </th>
+            <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.category }} </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="productReviews" class="">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Product Review</th>
+            <td mat-cell *matCellDef="let row" class="alignCenter" > {{(row.productReviews ==null)?'N/A':row.productReviews}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="salePrice" class="">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Price </th>
+            <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.salePrice==null)?'N/A':row.salePrice}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Isprime" class="">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> IsPrime Shipping? </th>
+            <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.primeShipping == 0)?'NO':'YES'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rank" class="">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Rank</th>
+            <td mat-cell *matCellDef="let row"  class="alignCenter" (click)="openDialog(row)"> {{(row.rank == null)?'N/A' :row.rank}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef class="alignCenter">
+              Keyword Details
+            </mat-header-cell>
+
+            <mat-cell *matCellDef="let row; let i=index;">
+              <button mat-icon-button  matTooltip="Click for details"  color="accent" (click)="startAction(row.id)">
+                <mat-icon aria-label="Details">details</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+
+
+        </table>
+        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center">
+          <mat-progress-spinner
+            color="primary"
+            mode="indeterminate">
+          </mat-progress-spinner>
+        </mat-card>
+
+
+        <div *ngIf="noData | async; else notShow" class="no-records">
+          No records found
+        </div>
+        <ng-template #notShow>
+          <mat-paginator  [pageSizeOptions]="[10, 15, 25, 100]"></mat-paginator>
+        </ng-template>
+        </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="margin-bottom:20px;"></div>
+
+
+
+<div class="card">
+  <div class="card-body"><h3>Top 3 Sellers</h3></div>
+  <div class="card-header">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="TopSellerDataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="productTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+          <td mat-cell *matCellDef="let row"><b><a href={{row.url}} target="_blank">{{row.productTitle}}</a></b></td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Category </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> <b>{{row.category }}</b> </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="productReviews" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Product Review</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> <b>{{(row.productReviews ==null)?'N/A':row.productReviews}} </b></td>
+        </ng-container>
+
+        <ng-container matColumnDef="salePrice" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Price </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> <b>{{(row.salePrice==null)?'N/A':row.salePrice}} </b></td>
+        </ng-container>
+
+        <ng-container matColumnDef="Isprime" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> IsPrime Shipping? </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> <b>{{(row.primeShipping == 0)?'NO':'YES'}}</b> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rank" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Rank</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"><b>{{(row.rank == null)?'N/A' :row.rank}} </b> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="alignCenter">
+            Keyword Details
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let row; let i=index;">
+            <button mat-icon-button  matTooltip="Click for details"  color="accent" (click)="startAction(row.id)">
+              <mat-icon aria-label="Details">details</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+      <mat-card *ngIf="isRankLoading" style="display: flex; justify-content: center; align-items: center">
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-card>
+      <div *ngIf="noData | async" class="no-records">
+        No records found
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body"><h3>Bottom 3 Sellers</h3></div>
+  <div class="card-header">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="BottomSellerDataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="productTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+          <td mat-cell *matCellDef="let row"><a href={{row.url}} target="_blank">{{row.productTitle}}</a></td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Category </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.category }} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="productReviews" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Product Review</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.productReviews ==null)?'N/A':row.productReviews}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="salePrice" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Price </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.salePrice==null)?'N/A':row.salePrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Isprime" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> IsPrime Shipping? </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.primeShipping == 0)?'NO':'YES'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rank" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Rank</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.rank == null)?'N/A' :row.rank}} </td>
+        </ng-container>
+
+      <!--  <ng-container matColumnDef="pictureAvailable" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Picture Count </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.pictureAvailable}} </td>
+        </ng-container>-->
+
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="alignCenter">
+            Keyword Details
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let row; let i=index;">
+            <button mat-icon-button  matTooltip="Click for details"  color="accent" (click)="startAction(row.id)">
+              <mat-icon aria-label="Details">details</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+      <mat-card *ngIf="isRankLoading" style="display: flex; justify-content: center; align-items: center">
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-card>
+      <div *ngIf="noData | async" class="no-records">
+        No records found
+      </div>
+
+    </div>
+
+  </div>
+</div>
+<div class="card">
+  <div class="card-body"><h3>Median 3 Sellers</h3></div>
+  <div class="card-header">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="midSellerDataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+
+        <ng-container matColumnDef="productTitle">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Product </th>
+          <td mat-cell *matCellDef="let row"><a href={{row.url}} target="_blank">{{row.productTitle}}</a></td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Category </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.category }} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="productReviews" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Product Review</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.productReviews ==null)?'N/A':row.productReviews}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="salePrice" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Price </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.salePrice ==0)?'N/A': row.salePrice}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Isprime" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> IsPrime Shipping? </th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.primeShipping == 0)?'NO':'YES'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="rank" class="">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Rank</th>
+          <td mat-cell *matCellDef="let row" class="alignCenter"> {{(row.rank == null)?'N/A' :row.rank}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="alignCenter">
+            Keyword Details
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let row; let i=index;">
+            <button mat-icon-button  matTooltip="Click for details"  color="accent" (click)="startAction(row.id)">
+              <mat-icon aria-label="Details">details</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+      <mat-card *ngIf="isRankLoading" style="display: flex; justify-content: center; align-items: center">
+        <mat-progress-spinner
+          color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+      </mat-card>
+      <div *ngIf="noData | async" class="no-records">
+        No records found
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+
+
+
+
+<!--
+
+<div class="card">
+  <div class="card-header">
+    <div class="mat-elevation-z8">
+      <div class="container container-main  w-responsive ">
+        <div style="display: block; width: 980px;height: 300px;" >
+          <h3>{{ reviewChartTitle }}</h3>
+          <canvas   baseChart
+                    [datasets]="reviewChartData"
+                    [labels]="reviewChartLabels"
+                    [options]="reviewChartOptions"
+                    [legend]="reviewChartLegend"
+                    [colors]="colors"
+                    [chartType]="reviewChartType"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style="margin-bottom:20px;"></div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="mat-elevation-z8">
+      <div class="container container-main  w-responsive ">
+        <div style="display: block; width:990px;height: 300px;" >
+          <h3>{{ buyBoxChartTitle }}</h3>
+          <canvas   baseChart
+                    [datasets]="buyBoxChartData"
+                    [labels]="buyBoxChartLabels"
+                    [options]="buyBoxChartOptions"
+                    [legend]="buyBoxChartLegend"
+                    [colors]="buyBoxcolors"
+                    [chartType]="buyBoxChartType"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+
+
+

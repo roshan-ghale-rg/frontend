@@ -1,0 +1,28 @@
+<div class="container" style="margin-top: 20px;">
+  <h5>Profile</h5>
+<div class="profile-container" style="width: 30%;">
+  <form>
+   <mat-form-field>
+            <mat-label>First Name</mat-label>
+            <input  matInput  placeholder="First name"  name="fname" [(ngModel)]="user.firstName" required>
+         </mat-form-field>
+         <mat-form-field>
+            <mat-label>Last Name</mat-label>
+            <input  matInput  placeholder="Last Name" name="lname" [(ngModel)]="user.lastName" required>
+         </mat-form-field>
+         <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input  matInput  placeholder="Email" name="email" [(ngModel)]="user.email" required>
+       </mat-form-field>
+       <mat-form-field>
+        <mat-label>Marketplace ID</mat-label>
+        <input  matInput  placeholder="Marketplace ID" name="marketPlaceId" [(ngModel)]="user.sellerId" required>
+     </mat-form-field>
+    <div>
+      <button mat-raised-button type="submit" color="primary" (click)="save()" [disabled]="user.firstName === '' || user.lastName === '' || user.email === '' || user.sellerId === ''">Save</button>
+      &nbsp;&nbsp;<button mat-raised-button type="button" routerLink="/home/inventory/home">Cancel</button>
+     
+    </div>
+    </form>
+    </div>
+</div>

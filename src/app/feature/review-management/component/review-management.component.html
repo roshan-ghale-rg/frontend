@@ -1,0 +1,56 @@
+<mat-toolbar>
+    <div class="headline">Review Management</div>
+</mat-toolbar>
+<div class="mat-elevation-z8">
+  <div class="be-container mat-elevation-z8">
+      <div class="table-container">
+          <div class="be-loading-shade" *ngIf="isLoadingResults">
+              <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            </div>
+            <mat-form-field>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+              </mat-form-field>
+    <table mat-table [dataSource]="dataSource" matSort matSortActive="name" matSortDisableClear matSortDirection="asc">
+   <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let row" class="name product-title"> {{row.name}} </td>
+      
+      </ng-container>
+
+      <ng-container matColumnDef="asin">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> ASIN </th>
+        <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.asin}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rating">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Rating </th>
+        <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.rating}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="review">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Review</th>
+        <td mat-cell *matCellDef="let row"> {{row.review}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="sentiment" class="alignCenter">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Sentiment</th>
+        <td mat-cell *matCellDef="let row" class="alignCenter" [ngStyle]="highlightSentiment(row.sentiment)"> {{row.sentiment}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="score" class="score">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="alignCenter"> Score</th>
+        <td mat-cell *matCellDef="let row" class="alignCenter"> {{row.score}} </td>
+      </ng-container>
+     
+
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+</div>
+</div>

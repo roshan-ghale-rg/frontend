@@ -1,0 +1,41 @@
+
+<body>
+
+<div class="card">
+  <h3 class="card-header">Sales & Profit Analysis</h3>
+ <div >
+   <h5 style="color:lightcoral;" class="d-inline-block">
+
+     TOTAL SALES: {{totalSale}}
+   </h5>
+
+   &nbsp;
+   <h5 style="color: darkblue" class="d-inline-block">
+     TOTAL PROFIT:  {{totalProfit}}
+   </h5>
+ <!--  &nbsp;
+   <h5 style="color: black" class="d-inline-block">
+     Sales & Profit Analysis
+   </h5>-->
+ </div>
+
+  <div class="mat-elevation-z8">
+    <div class="container container-main  w-responsive ">
+      <div style="display: block; width:990px;height: 300px;" >
+        <canvas   baseChart
+                  [datasets]="salesChartData"
+                  [labels]="salesChartLabels"
+                  [options]="salesChartOptions"
+                  [legend]="salesChartLegend"
+                  [chartType]="salesChartType"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+
+
+
+<div style="padding-bottom: 20px;"></div>

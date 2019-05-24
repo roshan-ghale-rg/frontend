@@ -1,0 +1,15 @@
+<mat-toolbar color="primary" class="app-toolbar fixed-header">
+  <button mat-icon-button (click)="navOpen()" style="line-height: 0px"><mat-icon>menu</mat-icon></button>
+  <div class="container">
+    <div class="d-flex justify-content-center">
+      <a class="navbar-brand" routerLink="/home/inventory/home">
+        <h1 class="app-name">Amazon Sellers</h1>
+        </a>
+    </div>
+  </div>
+  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>account_box</mat-icon> {{getUser().lastName}} &nbsp;<i class="fa fa-caret-down"></i></button>
+  <mat-menu #menu="matMenu">
+      <button mat-menu-item style="outline:none" routerLink = "profile"><mat-icon style="font-size:20px;">perm_identity</mat-icon>Profile</button>
+    <button mat-menu-item style="outline:none" (click)="logout()"><mat-icon style="font-size:20px;">power_settings_new</mat-icon>Logout</button>
+  </mat-menu>
+</mat-toolbar>
